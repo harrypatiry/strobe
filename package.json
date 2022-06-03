@@ -1,0 +1,19 @@
+{
+  "name": "strobe",
+  "version": "1.0.0",
+  "description": "audio player",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "keywords": [],
+  "author": "Harry Patiry",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^19.0.3"
+  },
+  "dependencies": {
+    "@electron/remote": "^2.0.8",
+    "jsmediatags": "^3.9.7"
+  }
+}
