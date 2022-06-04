@@ -5,32 +5,22 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 const ctx = canvas.getContext('2d');
 let uploadFile = document.getElementById('upload');
-let playpause = document.getElementById('play-pause');
 let info = document.getElementById('info')
 let title = document.getElementById('title')
 let container = document.getElementById('container');
 let audioSource;
 let analyser;
 let audio
+let i = false
 
 //upon clicking upload file, request the file from the main process
 uploadFile.addEventListener('click', () => {
     ipcRenderer.send('file-request');
     if (audio != undefined){
         audio.pause()
+        document.getElementById('audio-container').removeChild(audio)
     }
 });
-
-playpause.addEventListener('click', () => {
-    if (audio.paused && audio.currentTime > 0 && !audio.ended) {
-        audio.play();
-        playpause.innerText = "PAUSE"
-        
-    } else {
-        audio.pause();
-        playpause.innerText = "PLAY"
-    }
-})
 
 //upon receiving a file, process accordingly
 ipcRenderer.on('file', (event, file) => {
@@ -38,26 +28,14 @@ ipcRenderer.on('file', (event, file) => {
     player(file)
 });
 
-// const player = (file) => {
-//     audio = new Audio(file)
-//     // audio.play().catch(e => console.log(e))
-//     jsmediatags.read(file, {
-//         onSuccess: (tag) => {
-//             console.log(tag)
-//             title.innerText = tag.tags.title;
-//             info.innerText = tag.tags.artist;
-//         },
-//         onError: (error) => {
-//             console.log('error: ' + error)
-//         }
-//     })
-//     return audio
-// }
 
 // animate ------------------------------------------ 
 
 const player = (file) => {
     audio = new Audio(file)
+    audio.controls = true
+    audio.autoplay = true
+    document.getElementById('audio-container').appendChild(audio)
     audio.play().catch(e => console.log(e))
     jsmediatags.read(file, {
         onSuccess: (tag) => {
