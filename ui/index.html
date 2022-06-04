@@ -4,14 +4,19 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
     <title style="letter-spacing: 3px;">STROBE</title>
 </head>
 <body>
-    <h1>STROBE</h1>
-    <h2 id="title"></h2>
-    <p id="info"></p>
-    <button id="play-pause">play</button>
-    <button id="upload">Open File</button>
-    <script src="index.js"></script>
+    <div id="container">
+        <h1>STROBE</h1>
+        <canvas id="canvas"></canvas>
+        <h2 id="title"></h2>
+        <p id="info"></p>
+        <button id="play-pause">PLAY</button>
+        <button id="upload">OPEN FILE</button>
+    </div>
+    <script type="module" src="index.js"></script>
+    <!-- <script type="module" src="strobe.js"></script> -->
 </body>
 </html>
