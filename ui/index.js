@@ -7,11 +7,10 @@ const ctx = canvas.getContext('2d');
 let uploadFile = document.getElementById('upload');
 let info = document.getElementById('info')
 let title = document.getElementById('title')
-let container = document.getElementById('container');
 let audioSource;
 let analyser;
+let dataArray
 let audio
-let i = false
 
 //upon clicking upload file, request the file from the main process
 uploadFile.addEventListener('click', () => {
@@ -32,11 +31,7 @@ ipcRenderer.on('file', (event, file) => {
 // animate ------------------------------------------ 
 
 const player = (file) => {
-    audio = new Audio(file)
-    audio.controls = true
-    audio.autoplay = true
-    document.getElementById('audio-container').appendChild(audio)
-    audio.play().catch(e => console.log(e))
+    // get and display file metadata
     jsmediatags.read(file, {
         onSuccess: (tag) => {
             console.log(tag)
@@ -47,36 +42,49 @@ const player = (file) => {
             console.log('error: ' + error)
         }
     })
+
+    audio = new Audio(file)
+    audio.controls = true
+    audio.autoplay = true
+    document.getElementById('audio-container').appendChild(audio)
+    audio.play().catch(e => console.log(e))
     const audioCtx = new AudioContext();
     audioSource = audioCtx.createMediaElementSource(audio);
     analyser = audioCtx.createAnalyser();
     audioSource.connect(analyser);
     analyser.connect(audioCtx.destination);
-    analyser.fftSize = 1024;
-    const bufferLength = analyser.frequencyBinCount;
-    const dataArray = new Uint8Array(bufferLength);
-
-    const barWidth = canvas.width / bufferLength;
-    let barHeight
-    let x;
+    let bufferLength = analyser.frequencyBinCount;
+    dataArray = new Uint8Array(bufferLength);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     const animate = () => {
-        let x = 0;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        analyser.getByteFrequencyData(dataArray)
-        drawVisualiser(bufferLength, x, barWidth, barHeight, dataArray)
-        requestAnimationFrame(animate)
+        window.requestAnimationFrame(animate)
+        // analyser.getByteFrequencyData(dataArray)
+        analyser.getByteTimeDomainData(dataArray);
+        ctx.fillStyle = 'black'
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = 'white';
+        ctx.beginPath();
+        var sliceWidth = canvas.width * 1.0 / bufferLength;
+        var x = 0;
+        for(var i = 0; i < bufferLength; i++) {
+
+            var v = dataArray[i] / 128.0;
+            var y = v * canvas.height / 2;
+    
+            if(i === 0) {
+                ctx.moveTo(x, y);
+            } else {
+                ctx.lineTo(x, y);
+            }
+    
+            x += sliceWidth;
+        }
+        ctx.lineTo(canvas.width, canvas.height / 2);
+        ctx.stroke();
     }
     animate()
-}
-
-const drawVisualiser = (bufferLength, x, barWidth, barHeight, dataArray) => {
-    for (let i = 0; i < bufferLength; i++){
-        barHeight = dataArray[i] * 2
-        ctx.fillStyle = 'white'
-        ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
-        x += barWidth
-    }
 }
 
 
