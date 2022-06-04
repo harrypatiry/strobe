@@ -4,13 +4,13 @@ const canvas = document.getElementById('canvas');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 const ctx = canvas.getContext('2d');
-let audioSource;
-let analyser;
 let uploadFile = document.getElementById('upload');
 let playpause = document.getElementById('play-pause');
 let info = document.getElementById('info')
 let title = document.getElementById('title')
 let container = document.getElementById('container');
+let audioSource;
+let analyser;
 let audio
 
 //upon clicking upload file, request the file from the main process
