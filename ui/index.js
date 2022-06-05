@@ -1,4 +1,5 @@
 const { ipcRenderer } = require('electron');
+const { fs } = require('fs');
 const jsmediatags = require('jsmediatags');
 const canvas = document.getElementById('canvas');
 canvas.width = window.innerWidth;
@@ -44,7 +45,7 @@ const player = (file) => {
     })
 
     audio = new Audio(file)
-    audio.controls = true
+    audio.controls = false
     audio.autoplay = true
     document.getElementById('audio-container').appendChild(audio)
     audio.play().catch(e => console.log(e))
