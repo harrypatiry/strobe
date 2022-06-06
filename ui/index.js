@@ -25,11 +25,28 @@ uploadFile.addEventListener('click', () => {
 //upon receiving a file, process accordingly
 ipcRenderer.on('file', (event, file) => {
     console.log('obtained file from main process: ' + file);
-    player(file)
+    playlist(file)
 });
 
-
-// animate ------------------------------------------ 
+const playlist = (file) => {
+    let listContainer = document.getElementById('playlist');
+    let audioArray = [];
+    audioArray.push(file)
+    audioArray.forEach(item => {
+        jsmediatags.read(item, {
+            onSuccess: (tag) => {
+                let li = document.createElement('li')
+                listContainer.appendChild(li)
+                li.innerHTML += `${tag.tags.title} - ${tag.tags.artist}`
+            },
+            onError: (error) => {
+                console.log('error: ' + error)
+            }
+        })
+    })
+    player(audioArray)
+}
+//animate ------------------------------------------ 
 
 const player = (file) => {
     // get and display file metadata
