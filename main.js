@@ -1,6 +1,7 @@
 // Modules to control application life and create native browser window
 const { app, dialog, BrowserWindow, Menu, ipcMain } = require('electron')
 const path = require('path')
+const fs = require('fs')
 
 const createWindow = () => {
   // Create the browser window.
@@ -178,11 +179,28 @@ ipcMain.on('file-request', (event) => {
       }).then(file => {
             // Stating whether dialog operation was
             // cancelled or not.
-            console.log("dialog cancelled: " + file.canceled);
-            if (!file.canceled) {
+            if (file.canceled) {
+                console.log("dialog cancelled: " + file.canceled);
                 const filepath = file.filePaths[0].toString();
                 console.log(filepath);
                 event.reply('file', filepath);
+            } else {
+                  // get first element in array which is path to file selected
+                const filePath = file.filePaths[0];
+
+                // get file name
+                const fileName = path.basename(filePath);
+
+                // path to app data + fileName = "C:\Users\John\AppData\Roaming\app_name\picture.png"
+                let audioPath = path.join(app.getPath('userData'), fileName);
+
+                // copy file from original location to app data folder
+                fs.copyFile(filePath, audioPath, (err) => {
+                    if (err) throw err;
+                    console.log(fileName + ' uploaded.');
+                });
+                console.log(filePath);
+                event.reply('file', filePath);
             } 
       }).catch(err => {
             console.log(err)
@@ -203,12 +221,31 @@ ipcMain.on('file-request', (event) => {
             // Selector Property In macOS
             properties: ['openFile', 'openDirectory']
       }).then(file => {
-            console.log("dialog cancelled: " + file.canceled);
-            if (!file.canceled) {
-                const filepath = file.filePaths[0].toString();
-                console.log(filepath);
-                event.send('file', filepath);
-        }  
+            // Stating whether dialog operation was
+            // cancelled or not.
+            if (file.canceled) {
+              console.log("dialog cancelled: " + file.canceled);
+              const filepath = file.filePaths[0].toString();
+              console.log(filepath);
+              event.reply('file', filepath);
+          } else {
+                // get first element in array which is path to file selected
+              const filePath = file.filePaths[0];
+
+              // get file name
+              const fileName = path.basename(filePath);
+
+              // path to app data + fileName = "C:\Users\John\AppData\Roaming\app_name\picture.png"
+              let audioPath = path.join(app.getPath('userData'), fileName);
+
+              // copy file from original location to app data folder
+              fs.copyFile(filePath, audioPath, (err) => {
+                  if (err) throw err;
+                  console.log(fileName + ' uploaded.');
+              });
+              console.log(filePath);
+              event.reply('file', filePath);
+          } 
     }).catch(err => {
         console.log(err)
       });
