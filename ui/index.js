@@ -8,6 +8,7 @@ const ctx = canvas.getContext('2d');
 let uploadFile = document.getElementById('upload');
 let info = document.getElementById('info')
 let title = document.getElementById('title')
+let audioContainer = document.getElementById('audio-container')
 let audioSource;
 let analyser;
 let dataArray
@@ -16,10 +17,7 @@ let audio
 //upon clicking upload file, request the file from the main process
 uploadFile.addEventListener('click', () => {
     ipcRenderer.send('file-request');
-    if (audio != undefined){
-        audio.pause()
-        document.getElementById('audio-container').removeChild(audio)
-    }
+    removePlayer()
 });
 
 //upon receiving a file, process accordingly
@@ -51,13 +49,18 @@ const playlist = (file) => {
 
 const audioSelect = (i) => {
     console.log(`${i} has been recieved from playlist choice`)
-    // if (audio !== undefined) {
-    //     audio.pause()
-    // }
+    removePlayer()
     player(i)
 }
 //animate ------------------------------------------ 
-
+const removePlayer = () => {
+    if (audio != undefined || null){
+        audio.pause()
+        while (audioContainer.firstChild) {
+            audioContainer.removeChild(audioContainer.firstChild)
+        }
+    }
+}
 const player = (file) => {
     audio = new Audio(file)
     audio.controls = false
