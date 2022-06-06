@@ -20,11 +20,13 @@
             <button class='btn' onclick="document.querySelector('audio').volume += 0.1">+</button> 
             <button class='btn' onclick="document.querySelector('audio').volume -= 0.1">-</button> 
         </div>
-        <ul id="playlist">
-            <!-- audioArray items  -->
-        </ul>
+        <div id="playlist-container">
+            <ul id="playlist" class="btn-active">
+                <!-- audioArray items  -->
+            </ul>
+        </div>
         <button id="upload">OPEN FILE</button>
     </div>
-    <script type="module" src="index.js" defer></script>
+    <script type="module" src="strobe.js" defer></script>
 </body>
 </html>

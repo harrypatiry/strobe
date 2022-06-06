@@ -52,7 +52,7 @@ const audioSelect = (i) => {
     removePlayer()
     player(i)
 }
-//animate ------------------------------------------ 
+
 const removePlayer = () => {
     if (audio != undefined || null){
         audio.pause()
@@ -61,6 +61,7 @@ const removePlayer = () => {
         }
     }
 }
+//animate ------------------------------------------ 
 const player = (file) => {
     audio = new Audio(file)
     audio.controls = false
