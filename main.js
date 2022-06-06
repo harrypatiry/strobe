@@ -185,6 +185,12 @@ ipcMain.on('file-request', (event) => {
                 console.log(filepath);
                 event.reply('file', filepath);
             } else {
+              // TODO:
+              // copy the filePath to an array and display the name of the file 
+              // in the apps playlist. Use that filePath to retrieve the file when 
+              // it is selected from the playlist.
+
+
                   // get first element in array which is path to file selected
                 const filePath = file.filePaths[0];
 
