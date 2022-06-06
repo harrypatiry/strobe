@@ -32,35 +32,33 @@ const playlist = (file) => {
     let listContainer = document.getElementById('playlist');
     let audioArray = [];
     audioArray.push(file)
+    //display each item in audio array
     audioArray.forEach(item => {
+        // get and display file metadata
         jsmediatags.read(item, {
             onSuccess: (tag) => {
                 let li = document.createElement('li')
                 listContainer.appendChild(li)
                 li.innerHTML += `${tag.tags.title} - ${tag.tags.artist}`
+                li.onclick = () => {audioSelect(item)}
             },
             onError: (error) => {
                 console.log('error: ' + error)
             }
         })
     })
-    player(audioArray)
+}
+
+const audioSelect = (i) => {
+    console.log(`${i} has been recieved from playlist choice`)
+    // if (audio !== undefined) {
+    //     audio.pause()
+    // }
+    player(i)
 }
 //animate ------------------------------------------ 
 
 const player = (file) => {
-    // get and display file metadata
-    jsmediatags.read(file, {
-        onSuccess: (tag) => {
-            console.log(tag)
-            title.innerText = tag.tags.title;
-            info.innerText = tag.tags.artist;
-        },
-        onError: (error) => {
-            console.log('error: ' + error)
-        }
-    })
-
     audio = new Audio(file)
     audio.controls = false
     audio.autoplay = true

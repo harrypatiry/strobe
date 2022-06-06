@@ -76,3 +76,7 @@
     z-index: 100;
     text-transform: uppercase;
 }
+
+#playlist li {
+    cursor: pointer;
+}
