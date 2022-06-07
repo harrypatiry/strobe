@@ -41,6 +41,7 @@ const createWindow = () => {
     {
       label: 'File',
       submenu: [
+        //add upload btn here -------------------------------
         isMac ? { role: 'close' } : { role: 'quit' }
       ]
     },

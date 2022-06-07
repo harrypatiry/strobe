@@ -1,18 +1,18 @@
 const { ipcRenderer } = require('electron');
 const { fs } = require('fs');
 const jsmediatags = require('jsmediatags');
+const seek = document.getElementById('seek');
+let uploadFile = document.getElementById('upload');
+let audioContainer = document.getElementById('audio-container')
 const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
-const ctx = canvas.getContext('2d');
-let uploadFile = document.getElementById('upload');
-let info = document.getElementById('info')
-let title = document.getElementById('title')
-let audioContainer = document.getElementById('audio-container')
 let audioSource;
 let analyser;
 let dataArray
 let audio
+let audioChange
 
 //upon clicking upload file, request the file from the main process
 uploadFile.addEventListener('click', () => {
@@ -37,7 +37,7 @@ const playlist = (file) => {
             onSuccess: (tag) => {
                 let li = document.createElement('li')
                 listContainer.appendChild(li)
-                li.innerHTML += `${tag.tags.title} - ${tag.tags.artist}`
+                li.innerHTML += `${tag.tags.artist} - ${tag.tags.title}`
                 li.onclick = () => {audioSelect(item)}
             },
             onError: (error) => {
@@ -49,6 +49,7 @@ const playlist = (file) => {
 
 const audioSelect = (i) => {
     console.log(`${i} has been recieved from playlist choice`)
+    audioChange = true
     removePlayer()
     player(i)
 }
@@ -61,6 +62,37 @@ const removePlayer = () => {
         }
     }
 }
+
+// seek bar 
+const seekbar = (audio) => {
+    seek.value = 0;
+    const setupSeek = () => {
+        seek.min = audio.startTime;
+        seek.max = audio.startTime + audio.duration;
+    }
+    audio.ondurationchange = setupSeek;
+
+    const seekAudio = () => {
+        audio.currentTime = seek.value;
+    }
+
+    const updateUI = (audioChange) => {
+        if (audioChange){
+            let lastBuffered = audio.buffered.end(0)
+            audioChange = false;
+        }
+        let lastBuffered = audio.buffered.end(audio.buffered.length - 1);
+        seek.min = audio.startTime;
+        seek.max = lastBuffered;
+        seek.value = audio.currentTime;
+    }
+    seek.onchange = seekAudio;
+    audio.ontimeupdate = updateUI;
+    audio.addEventListener('durationchange', setupSeek);
+    audio.addEventListener('timeupdate', updateUI);
+}
+
+
 //animate ------------------------------------------ 
 const player = (file) => {
     audio = new Audio(file)
@@ -68,6 +100,9 @@ const player = (file) => {
     audio.autoplay = true
     document.getElementById('audio-container').appendChild(audio)
     audio.play().catch(e => console.log(e))
+    seekbar(audio)
+
+    // canvas 
     const audioCtx = new AudioContext();
     audioSource = audioCtx.createMediaElementSource(audio);
     analyser = audioCtx.createAnalyser();
@@ -105,10 +140,5 @@ const player = (file) => {
         ctx.stroke();
     }
     animate()
+    return audio
 }
-
-
-
-
-
-

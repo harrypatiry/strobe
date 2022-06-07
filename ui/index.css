@@ -2,6 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Courier New', Courier, monospace;
 }
 
 #container {
@@ -24,18 +25,18 @@
 }
 
 #upload {
+    cursor: pointer;
+    text-align: center;
     margin: auto;
-    left: 0;
-    right: 0;
+    right: 100px;
     top: 90%;
-    width: 20%;
     padding: 5px;
+    font-size: 16px;
     letter-spacing: 3px;
     position: absolute;
     color: #fff;
     z-index: 100;
     background-color: transparent;
-    border: 2px solid #fff;
     transition-duration: 0.4s;
 }
 
@@ -49,20 +50,20 @@
     margin: auto;
     left: 0;
     right: 0;
-    top: 80%;
+    top: 90%;
     letter-spacing: 3px;
     position: absolute;
     z-index: 100;
 }
 
 .btn {
+    cursor: pointer;
     text-transform: uppercase;
-    font-size: 18px;
+    font-size: 16px;
     letter-spacing: 3px;
     padding: 5px;
     color: #fff;
     background-color: transparent;
-    border: 2px solid #fff;
     transition-duration: 0.4s;
 }
 
@@ -71,10 +72,26 @@
     background-color: #fff;
 }
 
+#playlist-container {
+    font-size: 16px;
+}
+
+#playlist-container p{
+    font-size: 18px;
+    letter-spacing: 3px;
+    font-weight: bold;
+    text-align: left;
+    position: absolute;
+    top: 0;
+    right: 100px;
+    z-index: 100;
+    padding-top: 5px;
+}
+
 #playlist {
     display: block;
     position: absolute;
-    top: 0;
+    top: 24px;
     right: 0;
     z-index: 100;
     text-transform: uppercase;
@@ -84,4 +101,93 @@
     cursor: pointer;
     list-style: none;
     padding: 5px;
+    transition-duration: .4s;
 }
+
+#playlist li:hover {
+    background-color: #fff;
+    color: rgb(0, 0, 0);
+}
+
+#seek {
+    margin: auto;
+    position: absolute;
+    z-index: 100;
+    top: 85%;
+    left: 0;
+    right: 0;
+    opacity: 0.2;
+    text-align: center;
+    transition-duration: 0.4s;
+}
+
+#seek:hover {
+    opacity: 1;
+}
+
+input[type=range] {
+    -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
+    width: 100%; /* Specific width is required for Firefox. */
+    background: transparent; /* Otherwise white in Chrome */
+  }
+  
+  input[type=range]:focus {
+    outline: none; /* Removes the blue border. You should probably do some kind of focus styling for accessibility reasons though. */
+  }
+  
+  input[type=range]::-ms-track {
+    width: 100%;
+    cursor: pointer;
+  
+    /* Hides the slider so custom styles can be added */
+    background: transparent; 
+    border-color: transparent;
+    color: transparent;
+  }
+
+  /* Special styling for WebKit/Blink */
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: 1px solid #000000;
+    height: 24px;
+    width: 12px;
+    border-radius: 3px;
+    background: #ffffff;
+    cursor: pointer;
+    margin-top: -8px; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
+    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d; /* Add cool effects to your sliders! */
+  }
+
+  input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 8.4px;
+    cursor: pointer;
+    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+    background: #ffffff;
+    border-radius: 1.3px;
+    border: 0.2px solid #010101;
+  }
+  
+  input[type=range]:focus::-webkit-slider-runnable-track {
+    background: #ffffff;
+  }
+  
+  input[type=range]::-moz-range-track {
+    width: 100%;
+    height: 8.4px;
+    cursor: pointer;
+    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+    background: #ffffff;
+    border-radius: 1.3px;
+    border: 0.2px solid #010101;
+  }
+  
+  input[type=range]::-ms-track {
+    width: 100%;
+    height: 8.4px;
+    cursor: pointer;
+    background: transparent;
+    border-color: transparent;
+    border-width: 16px 0;
+    color: transparent;
+  }

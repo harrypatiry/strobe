@@ -14,6 +14,7 @@
         <p id="info"></p>
         <div id="audio-container">
         </div>
+        <input type="range" step="any" id="seek"></input>
         <div class="btn-container"> 
             <button class='btn' onclick="document.querySelector('audio').play()">Play</button> 
             <button class='btn' onclick="document.querySelector('audio').pause()">Pause</button> 
@@ -21,6 +22,7 @@
             <button class='btn' onclick="document.querySelector('audio').volume -= 0.1">-</button> 
         </div>
         <div id="playlist-container">
+            <p>PLAYLIST</p>
             <ul id="playlist" class="btn-active">
                 <!-- audioArray items  -->
             </ul>
